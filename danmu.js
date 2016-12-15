@@ -20,8 +20,9 @@ define(function(require, exports, module) { 'use strict';
     var colorArr = [];
     // 存储已占用的管道
     var randomArr = [];
+    // 用于防止弹幕重叠，被使用的管道不允许再次使用(记住 frontRandom 要小于 minPips)
+    var frontRandom = 6;
     // 最小弹幕数时管道数(靠近屏幕最上方)
-    //
     var minPipes = 7;
     // 最多弹幕数时管道数
     var _maxPipes;
@@ -96,8 +97,8 @@ define(function(require, exports, module) { 'use strict';
                     numArrT.push(20 * random);
                     colorArr.push(colorArrStore[random]);
                     randomArr.push(random);
-                    if (randomArr.length > 5) {
-                        randomArr = randomArr.slice(randomArr.length - 5, randomArr.length);
+                    if (randomArr.length > frontRandom) {
+                        randomArr = randomArr.slice(randomArr.length - frontRandom, randomArr.length);
                     }
                 }
             }
@@ -115,7 +116,8 @@ define(function(require, exports, module) { 'use strict';
 
         },
         stop: function() {
-
+            // 方案一，通过设置display
+            // 方案二，清空textArr，在房间组播事件另设置一个标识
         }
     };
 
